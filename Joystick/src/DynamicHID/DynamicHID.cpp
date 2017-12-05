@@ -91,10 +91,12 @@ void DynamicHID_::AppendDescriptor(DynamicHIDSubDescriptor *node)
 
 int DynamicHID_::SendReport(uint8_t id, const void* data, int len)
 {
-	auto ret = USB_Send(pluggedEndpoint, &id, 1);
-	if (ret < 0) return ret;
-	auto ret2 = USB_Send(pluggedEndpoint | TRANSFER_RELEASE, data, len);
-	if (ret2 < 0) return ret2;
+	//auto ret = USB_Send(pluggedEndpoint, 0, 0);
+	//if (ret < 0) return ret;
+	auto ret2 = USB_Send(pluggedEndpoint, data, len);
+	auto ret = USB_Send(pluggedEndpoint | TRANSFER_RELEASE, &id, 1);
+	//auto ret2 = USB_Send(pluggedEndpoint, data, len);
+	//if (ret2 < 0) return ret2;
 	return ret + ret2;
 }
 
