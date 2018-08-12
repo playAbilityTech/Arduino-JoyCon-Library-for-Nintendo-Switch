@@ -1,0 +1,12 @@
+SwitchJoystick_	KEYWORD1
+begin	KEYWORD2
+end	KEYWORD2
+setXAxis	KEYWORD2
+setYAxis	KEYWORD2
+setZAxis	KEYWORD2
+setRzAxis	KEYWORD2
+setButton	KEYWORD2
+pressButton	KEYWORD2
+releaseButton	KEYWORD2
+setHatSwitch	KEYWORD2
+sendState	KEYWORD2
