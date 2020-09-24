@@ -51,16 +51,63 @@ myboard.build.extra_flags={build.usb_flags}
 You can use this board entry as a template for other boards, in case you're not using an Arduino Leonardo; the important things are that the board must be ATmega32u4-based, that you replace `myboard` with a unique name, and that you keep the `vid`, `pid`, and `usb_product` as in this entry.
 Finally, open the `platform.txt` file under `hardware\arduino\avr`, and at the end of the file replace `build.usb_manufacturer="Unknown"` with `build.usb_manufacturer="HORI CO.,LTD."`.
 
+## Alternative Menu Installation
+Do the same procedure but in the `boards.txt` file under `hardware\arduino\avr` append to it the following entry:
+```
+menu.build_variant=Build Variant
+leonardo.menu.build_variant.leonardo=Leonardo
+
+leonardo.menu.build_variant.leonardo_switch=SwitchJoystick
+
+leonardo.menu.build_variant.leonardo_switch.name=SwitchJoystick
+leonardo.menu.build_variant.leonardo_switch.vid.0=0x0F0D
+leonardo.menu.build_variant.leonardo_switch.pid.0=0x8092
+leonardo.menu.build_variant.leonardo_switch.vid.1=0x0F0D
+leonardo.menu.build_variant.leonardo_switch.pid.1=0x0092
+
+leonardo.menu.build_variant.leonardo_switch.upload.tool=avrdude
+leonardo.menu.build_variant.leonardo_switch.upload.protocol=avr109
+leonardo.menu.build_variant.leonardo_switch.upload.maximum_size=28672
+leonardo.menu.build_variant.leonardo_switch.upload.maximum_data_size=2560
+leonardo.menu.build_variant.leonardo_switch.upload.speed=57600
+leonardo.menu.build_variant.leonardo_switch.upload.disable_flushing=true
+leonardo.menu.build_variant.leonardo_switch.upload.use_1200bps_touch=true
+leonardo.menu.build_variant.leonardo_switch.upload.wait_for_upload_port=true
+
+leonardo.menu.build_variant.leonardo_switch.bootloader.tool=avrdude
+leonardo.menu.build_variant.leonardo_switch.bootloader.low_fuses=0xff
+leonardo.menu.build_variant.leonardo_switch.bootloader.high_fuses=0xd8
+leonardo.menu.build_variant.leonardo_switch.bootloader.extended_fuses=0xcb
+leonardo.menu.build_variant.leonardo_switch.bootloader.file=caterina/Caterina-Leonardo.hex
+leonardo.menu.build_variant.leonardo_switch.bootloader.unlock_bits=0x3F
+leonardo.menu.build_variant.leonardo_switch.bootloader.lock_bits=0x2F
+
+leonardo.menu.build_variant.leonardo_switch.build.mcu=atmega32u4
+leonardo.menu.build_variant.leonardo_switch.build.f_cpu=16000000L
+leonardo.menu.build_variant.leonardo_switch.build.vid=0x0F0D
+leonardo.menu.build_variant.leonardo_switch.build.pid=0x0092
+leonardo.menu.build_variant.leonardo_switch.build.usb_product="POKKEN CONTROLLER"
+leonardo.menu.build_variant.leonardo_switch.build.board=AVR_LEONARDO
+leonardo.menu.build_variant.leonardo_switch.build.core=arduino
+leonardo.menu.build_variant.leonardo_switch.build.variant=leonardo
+leonardo.menu.build_variant.leonardo_switch.build.extra_flags={build.usb_flags}
+
+leonardo.menu.build_variant.leonardo_switch.build.usb_manufacturer="HORI CO.,LTD."
+```
+Restart the IDE and now in the board Arduino Leonardo menu you should see a "Buid Variant" menu.
+
 ## Example
 The following example Arduino sketch file is included in this library:
 
 - `JoystickTest` - Simple test of the SwitchJoystick library. Use 12 buttons with pullups connected to pins A0 to A3 and to pins 0 to 7 to control all the joystick features.
 
+- `JoystickIMUTest` - Simple test of the SwitchJoystick library. Use an MPU6050 as a joystick.
+
 ## SwitchJoystick Library API
 The following API is available if the SwitchJoystick library in included in a sketch file.
 
 ### SwitchJoystick\_()
-Constructor used to initialize and setup the Joystick. 
+Constructor used to initialize and setup the Joystick.
 
 ### SwitchJoystick.begin(bool initAutoSendState)
 Starts emulating a game controller connected to a Nintendo Switch. By default, all methods update the game controller state immediately. If `initAutoSendState` is set to `false`, the `sendState` method must be called to update the game controller state.
@@ -69,7 +116,7 @@ Starts emulating a game controller connected to a Nintendo Switch. By default, a
 Stops the game controller emulation to a connected Nintendo Switch (not actually implemented).
 
 ### SwitchJoystick.setXAxis(uint8_t value)
-Sets the X axis value. The range is 
+Sets the X axis value. The range is
 
 ### Joystick.setYAxis(uint8_t value)
 Sets the Y axis value.
