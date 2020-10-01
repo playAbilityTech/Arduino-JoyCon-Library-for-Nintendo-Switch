@@ -50,7 +50,11 @@ int leftJoyY = 128;
 
 unsigned long onTime = 0;
 
+#define BUTTON_PIN A0
+bool buttonPressed = false;
+
 void setup() {
+    
   if (testAutoSendMode)
   {
     Joystick.begin();
@@ -107,6 +111,16 @@ void setup() {
 }
 
 void loop() {
+
+  // push button: when released, take current pitch & roll as offset
+    if (digitalRead(BUTTON_PIN) == LOW && !buttonPressed) {
+        buttonPressed = true;
+    } else if (digitalRead(BUTTON_PIN) == HIGH && buttonPressed) {
+        pitchOffset = ypr[1];
+        rollOffset = ypr[2];
+        buttonPressed = false;
+    }
+  
   if (!dmpReady) return;
 
   while (!mpuInterrupt && fifoCount < packetSize) {
@@ -141,28 +155,28 @@ void loop() {
     leftJoyY = constrain(leftJoyY, 0, 255);
   }
 
-  if (!digitalRead(6)){
+  if (!digitalRead(15)){
     Joystick.pressButton(2); // A
   } else {
     Joystick.releaseButton(2);
   }
-  if (!digitalRead(0)){
+  if (!digitalRead(14)){
     Joystick.pressButton(1); // B
   } else {
     Joystick.releaseButton(1);
   }
-  if (!digitalRead(1)){
+  if (!digitalRead(16)){
     Joystick.pressButton(4); // L
   } else {
     Joystick.releaseButton(4);
   }
-  if (!digitalRead(5)){
+  if (!digitalRead(10)){
     Joystick.pressButton(5); // R
   } else{
     Joystick.releaseButton(5);
   }
 
-  if (digitalRead(10)) {
+  if (digitalRead(9)) {
     onTime = millis();
     Joystick.pressButton(10); // Lstick
   }
@@ -173,7 +187,7 @@ void loop() {
       rollOffset = ypr[2];
     }
     Joystick.releaseButton(10); // Lstick
-  }
+  } 
 
   Joystick.setXAxis(leftJoyX);
   Joystick.setYAxis(leftJoyY);
