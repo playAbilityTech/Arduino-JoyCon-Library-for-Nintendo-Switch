@@ -94,6 +94,13 @@ void setup() {
 
   devStatus = mpu.dmpInitialize();
 
+  mpu.setXAccelOffset(672);
+  mpu.setYAccelOffset(-2926);
+  mpu.setZAccelOffset(2625);
+  mpu.setXGyroOffset (177);
+  mpu.setYGyroOffset (-61);
+  mpu.setZGyroOffset (17);
+  
   if (devStatus == 0) {
     mpu.setDMPEnabled(true);
 
@@ -131,11 +138,11 @@ void loop() {
     mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
 
     // Set left joystick
-    leftJoyX = (ypr[2]-rollOffset) * ADC_Max/M_PI*SCALING;
-    leftJoyY = (ypr[1]-pitchOffset) * ADC_Max/M_PI*SCALING;
+    leftJoyX = (ypr[0]-rollOffset) * ADC_Max/M_PI*SCALING;
+    leftJoyY = (ypr[2]-pitchOffset) * ADC_Max/M_PI*SCALING;
 
-    leftJoyX = map(leftJoyX, -512, 511, 255, 0);
-    leftJoyY = map(leftJoyY, -512, 511, 255, 0);
+    leftJoyX = map(leftJoyX, -512, 511, 0, 255);
+    leftJoyY = map(leftJoyY, -512, 511, 0, 255);
 
     leftJoyX = constrain(leftJoyX, 0, 255);
     leftJoyY = constrain(leftJoyY, 0, 255);
@@ -169,8 +176,8 @@ void loop() {
   else {
     // Long press Set offset IMU
     if ((millis() - onTime) > 1000) {
-      pitchOffset = ypr[1];
-      rollOffset = ypr[2];
+      pitchOffset = ypr[2];
+      rollOffset = ypr[0];
     }
     Joystick.releaseButton(10); // Lstick
   }
