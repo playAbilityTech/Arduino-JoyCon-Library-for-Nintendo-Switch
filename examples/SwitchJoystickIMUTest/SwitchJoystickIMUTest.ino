@@ -94,13 +94,6 @@ void setup() {
 
   devStatus = mpu.dmpInitialize();
 
-  mpu.setXAccelOffset(672);
-  mpu.setYAccelOffset(-2926);
-  mpu.setZAccelOffset(2625);
-  mpu.setXGyroOffset (177);
-  mpu.setYGyroOffset (-61);
-  mpu.setZGyroOffset (17);
-  
   if (devStatus == 0) {
     mpu.setDMPEnabled(true);
 
@@ -111,6 +104,16 @@ void setup() {
   } else {
     fail();
   }
+}
+
+uint8_t dmpGetYawPitchRollOnEnd(float *data, Quaternion *q, VectorFloat *gravity) {
+    // yaw: (about Y axis)
+    data[0] = atan2(2*q -> x*q -> z - 2*q -> w*q -> y, 2*q -> w*q -> w + 2*q -> x*q -> x - 1);
+    // pitch: (nose up/down, about Z axis)
+    data[1] = atan(gravity -> x / sqrt(gravity -> z*gravity -> z + gravity -> y*gravity -> y));
+    // roll: (tilt left/right, about X axis)
+    data[2] = atan(gravity -> z / sqrt(gravity -> x*gravity -> x + gravity -> y*gravity -> y));
+    return 0;
 }
 
 void loop() {
@@ -135,14 +138,14 @@ void loop() {
     fifoCount -= packetSize;
     mpu.dmpGetQuaternion(&q, fifoBuffer);
     mpu.dmpGetGravity(&gravity, &q);
-    mpu.dmpGetYawPitchRoll(ypr, &q, &gravity);
+    dmpGetYawPitchRollOnEnd(ypr, &q, &gravity);
 
     // Set left joystick
-    leftJoyX = (ypr[0]-rollOffset) * ADC_Max/M_PI*SCALING;
+    leftJoyX = (ypr[1]-rollOffset) * ADC_Max/M_PI*SCALING;
     leftJoyY = (ypr[2]-pitchOffset) * ADC_Max/M_PI*SCALING;
 
-    leftJoyX = map(leftJoyX, -512, 511, 0, 255);
-    leftJoyY = map(leftJoyY, -512, 511, 0, 255);
+    leftJoyX = map(leftJoyX, -512, 511, 255, 0);
+    leftJoyY = map(leftJoyY, -512, 511, 255, 0);
 
     leftJoyX = constrain(leftJoyX, 0, 255);
     leftJoyY = constrain(leftJoyY, 0, 255);
@@ -177,7 +180,7 @@ void loop() {
     // Long press Set offset IMU
     if ((millis() - onTime) > 1000) {
       pitchOffset = ypr[2];
-      rollOffset = ypr[0];
+      rollOffset = ypr[1];
     }
     Joystick.releaseButton(10); // Lstick
   }
