@@ -106,6 +106,7 @@ void setup() {
   }
 }
 
+// https://www.i2cdevlib.com/forums/topic/397-change-default-axes-orientation/
 uint8_t dmpGetYawPitchRollOnEnd(float *data, Quaternion *q, VectorFloat *gravity) {
     // yaw: (about Y axis)
     data[0] = atan2(2*q -> x*q -> z - 2*q -> w*q -> y, 2*q -> w*q -> w + 2*q -> x*q -> x - 1);
