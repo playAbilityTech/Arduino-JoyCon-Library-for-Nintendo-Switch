@@ -152,28 +152,28 @@ void loop() {
     leftJoyY = constrain(leftJoyY, 0, 255);
   }
 
-  if (!digitalRead(6)){
+  if (!digitalRead(15)){
     Joystick.pressButton(2); // A
   } else {
     Joystick.releaseButton(2);
   }
-  if (!digitalRead(0)){
+  if (!digitalRead(14)){
     Joystick.pressButton(1); // B
   } else {
     Joystick.releaseButton(1);
   }
-  if (!digitalRead(1)){
+  if (!digitalRead(16)){
     Joystick.pressButton(4); // L
   } else {
     Joystick.releaseButton(4);
   }
-  if (!digitalRead(5)){
+  if (!digitalRead(10)){
     Joystick.pressButton(5); // R
   } else{
     Joystick.releaseButton(5);
   }
 
-  if (digitalRead(10)) {
+  if (digitalRead(AO)) {
     onTime = millis();
     Joystick.pressButton(10); // Lstick
   }
