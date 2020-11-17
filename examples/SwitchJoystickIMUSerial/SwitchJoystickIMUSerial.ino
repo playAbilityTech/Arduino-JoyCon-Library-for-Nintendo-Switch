@@ -4,6 +4,15 @@
 // Michele Perla for Hackerloop
 //------------------------------------------------------------
 //
+// Serial interface
+// ex: BT01000000000000000000000000 // press B
+// String should start with "BT" followed by 25 characters of 0 or 1.
+// Corresponding action of the 25 characters:
+// Y, B, A, X, L, R, Zl, Zr, -, +,
+// Lstick, Rstick, Home, Capture,
+// LeftJoyRIGHT, LeftJoyLEFT, LeftJoyDOWN, LeftJoyUP,
+// RightJoyRIGHT, RightJoyLEFT, RightJoyDOWN, RightJoyUP,
+// HatUP, HatRIGHT, HatDOWN, HatLEFT
 
 #include "I2Cdev.h"
 #include "MPU6050_6Axis_MotionApps20.h"
