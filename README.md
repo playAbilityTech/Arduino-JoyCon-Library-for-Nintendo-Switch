@@ -99,9 +99,41 @@ Restart the IDE and now in the board Arduino Leonardo menu you should see a "Bui
 ## Example
 The following example Arduino sketch file is included in this library:
 
-- `JoystickTest` - Simple test of the SwitchJoystick library. Use 12 buttons with pullups connected to pins A0 to A3 and to pins 0 to 7 to control all the joystick features.
+- `JoystickTest` - Simple test of the SwitchJoystick library. Use 12 buttons with pullups connected to pins A0 to A3 and to pins 4 to 15 to control all the joystick features.
 
 - `JoystickIMUTest` - Simple test of the SwitchJoystick library. Use an MPU6050 as a joystick.
+
+## Mapping
+
+|  Button |  Switch |
+| ------- | ------- |
+|       0 |       Y |
+|       1 |       B |
+|       2 |       A |
+|       3 |       Z |
+|       4 |       L |
+|       5 |       R |
+|       6 |      Zl |
+|       7 |      Zr |
+|       8 |       - |
+|       9 |       + |
+|      10 |  Lstick |
+|      11 |  Rstick |
+|      12 |    Home |
+|      13 | Capture |
+
+|    Axis |   Switch |
+| ------- | -------- |
+|     X,Y |  LeftJoy |
+|    Z,Rz | RightJoy |
+
+| Hat/D-pad |  Switch |
+| --------- | ------- |
+|         0 |      UP |
+|        90 |   RIGHT |
+|       180 |    DOWN |
+|       270 |    LEFT |
+|        -1 | RELEASE |
 
 ## SwitchJoystick Library API
 The following API is available if the SwitchJoystick library in included in a sketch file.
@@ -137,7 +169,7 @@ Press the indicated button (range: `0` - `15`). The button is the 0-based button
 Release the indicated button (range: `0` - `15`). The button is the 0-based button number (i.e. button #1 is `0`, button #2 is `1`, etc.).
 
 ### Joystick.setHatSwitch(int16_t value)
-Sets the value of the hat switch. The value is from 0° to 360°, but in 45° increments. Any value less than 45° will be rounded down (i.e. 44° is rounded down to 0°, 89° is rounded down to 45°, etc.). Set the value to `JOYSTICK_HATSWITCH_RELEASE` or `-1` to release the hat switch.
+Sets the value of the D-pad (hat switch). The value is from 0° to 360°, but in 45° increments. Any value less than 45° will be rounded down (i.e. 44° is rounded down to 0°, 89° is rounded down to 45°, etc.). Set the value to `JOYSTICK_HATSWITCH_RELEASE` or `-1` to release the hat switch.
 
 ### Joystick.sendState()
 Sends the updated joystick state to the Nintendo Switch. Only needs to be called if `AutoSendState` is `false` (see `SwitchJoystick.begin` for more details).
